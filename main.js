@@ -4,7 +4,8 @@ const Scorpion = {
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
   weapon: ["Longsword	", "Howling Sword", "Needle"],
   attack: function () {
-    console.log(Scorpion.name + "Fight...");
+    //console.log(Scorpion.name + "Fight...");
+    console.log(this.name + "Fight...");
   },
 };
 
@@ -14,10 +15,10 @@ const Subzero = {
   img: "http://reactmarathon-api.herokuapp.com/assets/subzero.gif",
   weapon: ["Longsword	", "Howling Sword", "Needle"],
   attack: function () {
-    console.log(Subzero.name + "Fight...");
+    console.log(this.name + "Fight...");
   },
 };
-
+const elArenas = document.querySelector(".arenas");
 //## Task #1
 
 // function createPlayer(player1, name, hp) {
@@ -90,9 +91,6 @@ function createPlayer(player, obj) {
   const elImg = document.createElement("img");
   elImg.src = obj.img;
   elInnerTwo.appendChild(elImg);
-
-  const elArenas = document.querySelector(".arenas");
-
   elArenas.appendChild(elPlayer);
 }
 createPlayer("player1", Scorpion);
