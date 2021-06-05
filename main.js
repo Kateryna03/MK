@@ -1,12 +1,13 @@
 const Scorpion = {
   name: "Scorpion",
-  hp: 20,
+  hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
   weapon: ["Longsword	", "Howling Sword", "Needle"],
   attack: function () {
     //console.log(Scorpion.name + "Fight...");
     console.log(this.name + "Fight...");
   },
+  player: 1,
 };
 
 const Subzero = {
@@ -17,8 +18,15 @@ const Subzero = {
   attack: function () {
     console.log(this.name + "Fight...");
   },
+  player: 2,
 };
 const elArenas = document.querySelector(".arenas");
+const elButton = document.querySelector(".button");
+
+elButton.addEventListener("click", changeHp);
+
+//"body > div > div.arenas.arena1 > div.player2 > div.progressbar > div.life"
+
 //## Task #1
 
 // function createPlayer(player1, name, hp) {
@@ -80,6 +88,7 @@ function createPlayer(player, obj) {
   const divInProgressbar1 = document.createElement("div");
   divInProgressbar1.classList.add("life");
   divInProgressbar1.style.width = `${obj.hp}%`;
+  console.log(divInProgressbar1);
 
   const divInProgressbar2 = document.createElement("div");
   divInProgressbar2.classList.add("name");
@@ -95,3 +104,24 @@ function createPlayer(player, obj) {
 }
 createPlayer("player1", Scorpion);
 createPlayer("player2", Subzero);
+
+function changeHp() {
+  const ElPlayerLife = document.querySelector(".player2 .life");
+  console.log(ElPlayerLife);
+  Subzero.hp -= 20;
+  ElPlayerLife.style.width = Subzero.hp + "%";
+
+  //   const ElPlayerLife = document.querySelector(
+  //     ".player" + player.player + ".life"
+  //   );
+  //   player.hp -= 20;
+  //   if (player.hp <= 0) {
+  //     ElPlayerLife = 0;
+  //   } else {
+  //     ElPlayerLife = player.hp;
+  //   }
+  console.log("YES");
+}
+// document.querySelector(
+//   "body > div > div.arenas.arena1 > div.player1 > div.progressbar > div.life"
+// );
