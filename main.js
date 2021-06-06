@@ -1,4 +1,4 @@
-const Scorpion = {
+const scorpion = {
   name: "Scorpion",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
@@ -10,7 +10,7 @@ const Scorpion = {
   player: 1,
 };
 
-const Subzero = {
+const subzero = {
   name: "Subzero",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/subzero.gif",
@@ -22,8 +22,6 @@ const Subzero = {
 };
 const elArenas = document.querySelector(".arenas");
 const elButton = document.querySelector(".button");
-
-elButton.addEventListener("click", changeHp);
 
 //"body > div > div.arenas.arena1 > div.player2 > div.progressbar > div.life"
 
@@ -62,7 +60,7 @@ elButton.addEventListener("click", changeHp);
 //   elArenas.appendChild(elPlayer);
 // }
 // //## Task #2
-// // const elArenas = document.querySelectorAll(".arenas");
+// // const elArenas = document.querySelector(".arenas");
 // // console.log(elArenas);
 
 // createPlayer("player1", "SCORPION", 50);
@@ -72,56 +70,68 @@ elButton.addEventListener("click", changeHp);
 // Передай в функцию createPlayer всего лишь два аргумента, 1 аргумент это строка 'player1' или 'player2' второй аргумент — это объект твоего игрока из задания Task#0.
 
 // Необходимые поля, такие как name, hp, img вставь в нужные места в коде.
-function createPlayer(player, obj) {
-  const elPlayer = document.createElement("div");
-  elPlayer.classList.add(player);
 
-  const elInnerOne = document.createElement("div");
-  elInnerOne.classList.add("progressbar");
+function createElement(tag, className) {
+  const ElTag = document.createElement(tag);
 
-  const elInnerTwo = document.createElement("div");
-  elInnerTwo.classList.add("character");
+  if (className) {
+    ElTag.classList.add(className);
+  }
+  return ElTag;
+}
+
+function createPlayer(obj) {
+  const elPlayer = createElement("div", "player" + obj.player);
+  const elInnerOne = createElement("div", "progressbar");
+  const elInnerTwo = createElement("div", "character");
+  const divInProgressbar1 = createElement("div", "life");
+  const divInProgressbar2 = createElement("div", "name");
+  const elImg = createElement("img");
+
+  divInProgressbar1.style.width = `${obj.hp}%`;
+  divInProgressbar2.innerText = obj.name;
+  elImg.src = obj.img;
 
   elPlayer.appendChild(elInnerOne);
   elPlayer.appendChild(elInnerTwo);
-
-  const divInProgressbar1 = document.createElement("div");
-  divInProgressbar1.classList.add("life");
-  divInProgressbar1.style.width = `${obj.hp}%`;
-  console.log(divInProgressbar1);
-
-  const divInProgressbar2 = document.createElement("div");
-  divInProgressbar2.classList.add("name");
-  divInProgressbar2.innerText = obj.name;
-
   elInnerOne.appendChild(divInProgressbar1);
   elInnerOne.appendChild(divInProgressbar2);
-
-  const elImg = document.createElement("img");
-  elImg.src = obj.img;
   elInnerTwo.appendChild(elImg);
-  elArenas.appendChild(elPlayer);
-}
-createPlayer("player1", Scorpion);
-createPlayer("player2", Subzero);
 
-function changeHp() {
-  const ElPlayerLife = document.querySelector(".player2 .life");
-  console.log(ElPlayerLife);
-  Subzero.hp -= 20;
-  ElPlayerLife.style.width = Subzero.hp + "%";
-
-  //   const ElPlayerLife = document.querySelector(
-  //     ".player" + player.player + ".life"
-  //   );
-  //   player.hp -= 20;
-  //   if (player.hp <= 0) {
-  //     ElPlayerLife = 0;
-  //   } else {
-  //     ElPlayerLife = player.hp;
-  //   }
-  console.log("YES");
+  return elPlayer;
 }
-// document.querySelector(
-//   "body > div > div.arenas.arena1 > div.player1 > div.progressbar > div.life"
-// );
+elArenas.appendChild(createPlayer(scorpion));
+elArenas.appendChild(createPlayer(subzero));
+
+function changeHp(player) {
+  const ElPlayerLife = document.querySelector(
+    ".player" + player.player + " .life"
+  );
+  player.hp -= Math.ceil(Math.random() * 20);
+  ElPlayerLife.style.width = player.hp + "%";
+  console.log(player.hp);
+  if (player.hp <= 0) {
+    ElPlayerLife.style.width = 0;
+    elArenas.appendChild(playerLose(player));
+    elButton.disabled = true;
+  }
+}
+
+function playerLose(player) {
+  const elLoseTitle = createElement("div", "loseTitle");
+  if (scorpion.hp === player.hp && subzero.hp === player.hp) {
+    elLoseTitle.innerText = "try again";
+    return elLoseTitle;
+  } else if (scorpion.hp === player.hp && subzero.hp !== player.hp) {
+    elLoseTitle.innerText = scorpion.name + " win";
+    return elLoseTitle;
+  } else if (subzero.hp === player.hp && scorpion.hp !== player.hp) {
+    elLoseTitle.innerText = subzero.name + " win";
+    return elLoseTitle;
+  }
+}
+
+elButton.addEventListener("click", function () {
+  changeHp(scorpion);
+  changeHp(subzero);
+});
