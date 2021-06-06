@@ -121,14 +121,12 @@ function playerLose(player) {
   const elLoseTitle = createElement("div", "loseTitle");
   if (scorpion.hp === player.hp && subzero.hp === player.hp) {
     elLoseTitle.innerText = "try again";
-    return elLoseTitle;
   } else if (scorpion.hp === player.hp && subzero.hp !== player.hp) {
     elLoseTitle.innerText = scorpion.name + " win";
-    return elLoseTitle;
   } else if (subzero.hp === player.hp && scorpion.hp !== player.hp) {
     elLoseTitle.innerText = subzero.name + " win";
-    return elLoseTitle;
   }
+  return elLoseTitle;
 }
 
 elButton.addEventListener("click", function () {
