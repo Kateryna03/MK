@@ -4,11 +4,10 @@ const scorpion = {
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
   weapon: ["Longsword	", "Howling Sword", "Needle"],
   attack: function () {
-    //console.log(Scorpion.name + "Fight...");
+    //console.log(scorpion.name + "Fight...");
     console.log(this.name + "Fight...");
   },
   player: 1,
-
   changeHp: changeHp,
   elHp: elHp,
   renderHp: renderHp,
@@ -27,6 +26,7 @@ const subzero = {
   elHp: elHp,
   renderHp: renderHp,
 };
+
 const elArenas = document.querySelector(".arenas");
 const elButton = document.querySelector(".button");
 
@@ -79,12 +79,12 @@ const elButton = document.querySelector(".button");
 // Необходимые поля, такие как name, hp, img вставь в нужные места в коде.
 
 function createElement(tag, className) {
-  const ElTag = document.createElement(tag);
+  const elTag = document.createElement(tag);
 
   if (className) {
-    ElTag.classList.add(className);
+    elTag.classList.add(className);
   }
-  return ElTag;
+  return elTag;
 }
 
 function createPlayer(obj) {
@@ -113,44 +113,46 @@ elArenas.appendChild(createPlayer(subzero));
 function getRandom(n) {
   return Math.ceil(Math.random() * n);
 }
+// Функция changeHP должна в аргументах принимать, на какое кол-во надо изменять HP. И решать, нужно ли отнимать или ставить 0. Больше ничего эта функция не должна делать.
 
 function changeHp(n) {
   this.hp -= n;
   if (this.hp <= 0) {
     this.hp = 0;
+  } else {
+    this.hp === this.hp;
   }
   return this.hp;
 }
+// changeHp(10);
+
 function elHp() {
-  return (element = document.querySelector(".player" + this.player));
+  return (element = document.querySelector(".player" + this.player + " .life"));
 }
 
 function renderHp() {
-  const elPlayerLife = document.querySelector(".player" + pl.player + " .life");
-  return (elPlayerLife.style.width = player.hp + "%");
+  let element = this.elHp();
+  return (element.style.width = this.hp + "%");
 }
-// Функция changeHP должна в аргументах принимать, на какое кол-во надо изменять HP. И решать, нужно ли отнимать или ставить 0. Больше ничего эта функция не должна делать.
-// function changeHp(n) {
-//   let newHp;
-//   if (this.hp > 0) {
-//     newHp = player.hp - n;
-//   }
-// }
 
 function playerWin(name) {
-  const elLoseTitle = createElement("div", "loseTitle");
+  const elWinTitle = createElement("div", "loseTitle");
   if (name) {
-    elLoseTitle.innerText = name + " win";
+    elWinTitle.innerText = name + " win";
   } else {
-    elLoseTitle.innerText = "draw";
+    elWinTitle.innerText = "draw";
   }
 
-  return elLoseTitle;
+  return elWinTitle;
 }
 
 elButton.addEventListener("click", function () {
   scorpion.changeHp(getRandom(20));
   subzero.changeHp(getRandom(20));
+  scorpion.renderHp();
+  subzero.renderHp();
+  scorpion.elHp();
+  subzero.elHp();
   // changeHp(scorpion);
   // changeHp(subzero);
 
