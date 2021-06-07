@@ -153,6 +153,7 @@ elButton.addEventListener("click", function () {
   subzero.renderHp();
   scorpion.elHp();
   subzero.elHp();
+
   // changeHp(scorpion);
   // changeHp(subzero);
 
@@ -168,4 +169,22 @@ elButton.addEventListener("click", function () {
   } else if (subzero.hp === 0 && scorpion.hp === 0) {
     elArenas.appendChild(playerWin());
   }
+});
+
+function createReloadButton() {
+  const reloadWrap = createElement("div", "reloadWrap");
+  const restartButton = createElement("button", "button");
+
+  restartButton.innerText = "Restart";
+
+  reloadWrap.appendChild(restartButton);
+  elArenas.appendChild(reloadWrap);
+  console.log(reloadWrap);
+  console.log(restartButton);
+}
+createReloadButton();
+const elReloadButton = document.querySelector(".reloadWrap .button");
+console.log(elReloadButton);
+elReloadButton.addEventListener("click", function () {
+  return window.location.reload();
 });
