@@ -163,28 +163,28 @@ elButton.addEventListener("click", function () {
 
   if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
     elArenas.appendChild(playerWin(subzero.name));
+    createReloadButton();
     console.log(elArenas);
   } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
     elArenas.appendChild(playerWin(scorpion.name));
+    createReloadButton();
   } else if (subzero.hp === 0 && scorpion.hp === 0) {
     elArenas.appendChild(playerWin());
+    return createReloadButton();
   }
 });
 
 function createReloadButton() {
   const reloadWrap = createElement("div", "reloadWrap");
   const restartButton = createElement("button", "button");
-
   restartButton.innerText = "Restart";
 
   reloadWrap.appendChild(restartButton);
   elArenas.appendChild(reloadWrap);
   console.log(reloadWrap);
   console.log(restartButton);
+
+  restartButton.addEventListener("click", function () {
+    return window.location.reload();
+  });
 }
-createReloadButton();
-const elReloadButton = document.querySelector(".reloadWrap .button");
-console.log(elReloadButton);
-elReloadButton.addEventListener("click", function () {
-  return window.location.reload();
-});
