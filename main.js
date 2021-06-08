@@ -4,10 +4,13 @@ const scorpion = {
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
   weapon: ["Longsword	", "Howling Sword", "Needle"],
   attack: function () {
-    //console.log(Scorpion.name + "Fight...");
+    //console.log(scorpion.name + "Fight...");
     console.log(this.name + "Fight...");
   },
   player: 1,
+  changeHp: changeHp,
+  elHp: elHp,
+  renderHp: renderHp,
 };
 
 const subzero = {
@@ -19,7 +22,11 @@ const subzero = {
     console.log(this.name + "Fight...");
   },
   player: 2,
+  changeHp: changeHp,
+  elHp: elHp,
+  renderHp: renderHp,
 };
+
 const elArenas = document.querySelector(".arenas");
 const elButton = document.querySelector(".button");
 
@@ -72,6 +79,12 @@ const elButton = document.querySelector(".button");
 // Необходимые поля, такие как name, hp, img вставь в нужные места в коде.
 
 function createElement(tag, className) {
+  const elTag = document.createElement(tag);
+
+  if (className) {
+    elTag.classList.add(className);
+  }
+  return elTag;
   const ElTag = document.createElement(tag);
 
   if (className) {
@@ -103,6 +116,85 @@ function createPlayer(obj) {
 elArenas.appendChild(createPlayer(scorpion));
 elArenas.appendChild(createPlayer(subzero));
 
+
+function getRandom(n) {
+  return Math.ceil(Math.random() * n);
+}
+// Функция changeHP должна в аргументах принимать, на какое кол-во надо изменять HP. И решать, нужно ли отнимать или ставить 0. Больше ничего эта функция не должна делать.
+
+function changeHp(n) {
+  this.hp -= n;
+  if (this.hp <= 0) {
+    this.hp = 0;
+  } else {
+    this.hp === this.hp;
+  }
+  return this.hp;
+}
+// changeHp(10);
+
+function elHp() {
+  return (element = document.querySelector(".player" + this.player + " .life"));
+}
+
+function renderHp() {
+  let element = this.elHp();
+  return (element.style.width = this.hp + "%");
+}
+
+function playerWin(name) {
+  const elWinTitle = createElement("div", "loseTitle");
+  if (name) {
+    elWinTitle.innerText = name + " win";
+  } else {
+    elWinTitle.innerText = "draw";
+  }
+
+  return elWinTitle;
+}
+
+elButton.addEventListener("click", function () {
+  scorpion.changeHp(getRandom(20));
+  subzero.changeHp(getRandom(20));
+  scorpion.renderHp();
+  subzero.renderHp();
+  scorpion.elHp();
+  subzero.elHp();
+
+  // changeHp(scorpion);
+  // changeHp(subzero);
+
+  if (scorpion.hp === 0 || subzero.hp === 0) {
+    elButton.disabled = true;
+  }
+
+  if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
+    elArenas.appendChild(playerWin(subzero.name));
+    console.log(elArenas);
+  } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
+    elArenas.appendChild(playerWin(scorpion.name));
+  } else if (subzero.hp === 0 && scorpion.hp === 0) {
+    elArenas.appendChild(playerWin());
+  }
+});
+
+function createReloadButton() {
+  const reloadWrap = createElement("div", "reloadWrap");
+  const restartButton = createElement("button", "button");
+
+  restartButton.innerText = "Restart";
+
+  reloadWrap.appendChild(restartButton);
+  elArenas.appendChild(reloadWrap);
+  console.log(reloadWrap);
+  console.log(restartButton);
+}
+createReloadButton();
+const elReloadButton = document.querySelector(".reloadWrap .button");
+console.log(elReloadButton);
+elReloadButton.addEventListener("click", function () {
+  return window.location.reload();
+  
 function getRandomPlayerHp(n) {
   return Math.ceil(Math.random() * n);
 }
@@ -146,4 +238,5 @@ elButton.addEventListener("click", function () {
   } else if (subzero.hp === 0 && scorpion.hp === 0) {
     elArenas.appendChild(playerWin());
   }
+
 });
