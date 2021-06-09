@@ -85,12 +85,6 @@ function createElement(tag, className) {
     elTag.classList.add(className);
   }
   return elTag;
-  const ElTag = document.createElement(tag);
-
-  if (className) {
-    ElTag.classList.add(className);
-  }
-  return ElTag;
 }
 
 function createPlayer(obj) {
@@ -115,7 +109,6 @@ function createPlayer(obj) {
 }
 elArenas.appendChild(createPlayer(scorpion));
 elArenas.appendChild(createPlayer(subzero));
-
 
 function getRandom(n) {
   return Math.ceil(Math.random() * n);
@@ -170,73 +163,28 @@ elButton.addEventListener("click", function () {
 
   if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
     elArenas.appendChild(playerWin(subzero.name));
+    createReloadButton();
     console.log(elArenas);
   } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
     elArenas.appendChild(playerWin(scorpion.name));
+    createReloadButton();
   } else if (subzero.hp === 0 && scorpion.hp === 0) {
     elArenas.appendChild(playerWin());
+    return createReloadButton();
   }
 });
 
 function createReloadButton() {
   const reloadWrap = createElement("div", "reloadWrap");
   const restartButton = createElement("button", "button");
-
   restartButton.innerText = "Restart";
 
   reloadWrap.appendChild(restartButton);
   elArenas.appendChild(reloadWrap);
   console.log(reloadWrap);
   console.log(restartButton);
+
+  restartButton.addEventListener("click", function () {
+    return window.location.reload();
+  });
 }
-createReloadButton();
-const elReloadButton = document.querySelector(".reloadWrap .button");
-console.log(elReloadButton);
-elReloadButton.addEventListener("click", function () {
-  return window.location.reload();
-  
-function getRandomPlayerHp(n) {
-  return Math.ceil(Math.random() * n);
-}
-
-function changeHp(player) {
-  const elPlayerLife = document.querySelector(
-    ".player" + player.player + " .life"
-  );
-  player.hp -= getRandomPlayerHp(20);
-
-  if (player.hp <= 0) {
-    player.hp = 0;
-  }
-  elPlayerLife.style.width = player.hp + "%";
-}
-
-function playerWin(name) {
-  const elLoseTitle = createElement("div", "loseTitle");
-  if (name) {
-    elLoseTitle.innerText = name + " win";
-  } else {
-    elLoseTitle.innerText = "draw";
-  }
-
-  return elLoseTitle;
-}
-
-elButton.addEventListener("click", function () {
-  changeHp(scorpion);
-  changeHp(subzero);
-
-  if (scorpion.hp === 0 || subzero.hp === 0) {
-    elButton.disabled = true;
-  }
-
-  if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
-    elArenas.appendChild(playerWin(subzero.name));
-    console.log(elArenas);
-  } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
-    elArenas.appendChild(playerWin(scorpion.name));
-  } else if (subzero.hp === 0 && scorpion.hp === 0) {
-    elArenas.appendChild(playerWin());
-  }
-
-});
