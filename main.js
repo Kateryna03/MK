@@ -8,9 +8,9 @@ const scorpion = {
     console.log(this.name + "Fight...");
   },
   player: 1,
-  changeHp: changeHp,
-  elHp: elHp,
-  renderHp: renderHp,
+  changeHp,
+  elHp,
+  renderHp,
 };
 
 const subzero = {
@@ -22,13 +22,22 @@ const subzero = {
     console.log(this.name + "Fight...");
   },
   player: 2,
-  changeHp: changeHp,
-  elHp: elHp,
-  renderHp: renderHp,
+  changeHp,
+  elHp,
+  renderHp,
 };
 
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+};
+
+const ATTACK = ["head", "body", "foot"];
+const elFormFight = document.querySelector(".control");
+console.log(elFormFight);
 const elArenas = document.querySelector(".arenas");
-const elButton = document.querySelector(".button");
+//const elButton = document.querySelector(".button");
 
 //"body > div > div.arenas.arena1 > div.player2 > div.progressbar > div.life"
 
@@ -119,8 +128,6 @@ function changeHp(n) {
   this.hp -= n;
   if (this.hp <= 0) {
     this.hp = 0;
-  } else {
-    this.hp === this.hp;
   }
   return this.hp;
 }
@@ -146,33 +153,27 @@ function playerWin(name) {
   return elWinTitle;
 }
 
-elButton.addEventListener("click", function () {
-  scorpion.changeHp(getRandom(20));
-  subzero.changeHp(getRandom(20));
-  scorpion.renderHp();
-  subzero.renderHp();
-  scorpion.elHp();
-  subzero.elHp();
+// elButton.addEventListener("click", function () {
+//   scorpion.changeHp(getRandom(20));
+//   subzero.changeHp(getRandom(20));
+//   scorpion.renderHp();
+//   subzero.renderHp();
+//   scorpion.elHp();
+//   subzero.elHp();
 
-  // changeHp(scorpion);
-  // changeHp(subzero);
+//   if (scorpion.hp === 0 || subzero.hp === 0) {
+//     elButton.disabled = true;
+//     createReloadButton();
+//   }
 
-  if (scorpion.hp === 0 || subzero.hp === 0) {
-    elButton.disabled = true;
-  }
-
-  if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
-    elArenas.appendChild(playerWin(subzero.name));
-    createReloadButton();
-    console.log(elArenas);
-  } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
-    elArenas.appendChild(playerWin(scorpion.name));
-    createReloadButton();
-  } else if (subzero.hp === 0 && scorpion.hp === 0) {
-    elArenas.appendChild(playerWin());
-    return createReloadButton();
-  }
-});
+//   if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
+//     elArenas.appendChild(playerWin(subzero.name));
+//   } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
+//     elArenas.appendChild(playerWin(scorpion.name));
+//   } else if (subzero.hp === 0 && scorpion.hp === 0) {
+//     elArenas.appendChild(playerWin());
+//   }
+// });
 
 function createReloadButton() {
   const reloadWrap = createElement("div", "reloadWrap");
@@ -188,3 +189,61 @@ function createReloadButton() {
     return window.location.reload();
   });
 }
+
+function enemyAttack() {
+  const hit = ATTACK[getRandom(3) - 1];
+  //console.log("HIT:", hit);
+  const defence = ATTACK[getRandom(3) - 1];
+  //console.log("DEFENCE:", defence);
+
+  return {
+    value: getRandom(HIT[hit]),
+    hit,
+    defence,
+  };
+}
+
+elFormFight.addEventListener("submit", function (e) {
+  e.preventDefault();
+  //console.dir(elFormFight);
+  const enemy = enemyAttack();
+  //console.log(enemy);
+  const attack = {};
+
+  for (let item of elFormFight) {
+    //console.dir(item);
+    if (item.checked && item.name === "hit") {
+      attack.value = getRandom(HIT[item.value]);
+      attack.hit = item.value;
+    }
+    if (item.checked && item.name === "defence") {
+      attack.defence = item.value;
+    }
+    item.checked = false;
+  }
+  if (attack.hit !== enemy.defence) {
+    subzero.changeHp(attack.value);
+    subzero.renderHp();
+  }
+  if (enemy.hit !== attack.defence) {
+    scorpion.changeHp(attack.value);
+    scorpion.renderHp();
+  }
+
+  if (scorpion.hp === 0 || subzero.hp === 0) {
+    document.querySelector("button").disabled = true;
+    for (let item of elFormFight) {
+      item.disabled = true;
+    }
+    createReloadButton();
+  }
+  if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
+    elArenas.appendChild(playerWin(subzero.name));
+  } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
+    elArenas.appendChild(playerWin(scorpion.name));
+  } else if (subzero.hp === 0 && scorpion.hp === 0) {
+    elArenas.appendChild(playerWin());
+  }
+  console.log("attack:", attack);
+  console.log("enemy:", enemy);
+});
