@@ -1,42 +1,65 @@
-const scorpion = {
-  name: "Scorpion",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
-  weapon: ["Longsword	", "Howling Sword", "Needle"],
-  attack: function () {
-    //console.log(scorpion.name + "Fight...");
-    console.log(this.name + "Fight...");
-  },
-  player: 1,
-  changeHp,
-  elHp,
-  renderHp,
-};
+import { scorpion, subzero } from "./players.js";
+//import logs from "./logs.js";
+import createElement from "./createElement.js";
+import enemyAttack from "./enemyAttack.js";
+import playerAttack from "./playerAttack.js";
+import showResult from "./showResalt.js";
+import generateLogs from "./generateLogs.js";
 
-const subzero = {
-  name: "Subzero",
-  hp: 100,
-  img: "http://reactmarathon-api.herokuapp.com/assets/subzero.gif",
-  weapon: ["Longsword	", "Howling Sword", "Needle"],
-  attack: function () {
-    console.log(this.name + "Fight...");
-  },
-  player: 2,
-  changeHp,
-  elHp,
-  renderHp,
-};
-
-const HIT = {
-  head: 30,
-  body: 25,
-  foot: 20,
-};
-
-const ATTACK = ["head", "body", "foot"];
 const elFormFight = document.querySelector(".control");
-console.log(elFormFight);
 const elArenas = document.querySelector(".arenas");
+//const elChat = document.querySelector(".chat");
+generateLogs("start", scorpion, subzero);
+
+function createPlayer(obj) {
+  const elPlayer = createElement("div", "player" + obj.player);
+  const elInnerOne = createElement("div", "progressbar");
+  const elInnerTwo = createElement("div", "character");
+  const divInProgressbar1 = createElement("div", "life");
+  const divInProgressbar2 = createElement("div", "name");
+  const elImg = createElement("img");
+
+  divInProgressbar1.style.width = `${obj.hp}%`;
+  divInProgressbar2.innerText = obj.name;
+  elImg.src = obj.img;
+
+  elPlayer.appendChild(elInnerOne);
+  elPlayer.appendChild(elInnerTwo);
+  elInnerOne.appendChild(divInProgressbar1);
+  elInnerOne.appendChild(divInProgressbar2);
+  elInnerTwo.appendChild(elImg);
+
+  return elPlayer;
+}
+elArenas.appendChild(createPlayer(scorpion));
+elArenas.appendChild(createPlayer(subzero));
+
+elFormFight.addEventListener("submit", function (e) {
+  e.preventDefault();
+  //console.dir(elFormFight);
+  const enemy = enemyAttack();
+  const player = playerAttack();
+  console.log(enemy);
+
+  if (player.hit !== enemy.defence) {
+    subzero.changeHp(player.value);
+    subzero.renderHp();
+    generateLogs("hit", scorpion, subzero, player.value);
+  } else {
+    generateLogs("defence", subzero, scorpion);
+  }
+  if (enemy.hit !== player.defence) {
+    scorpion.changeHp(enemy.value);
+    scorpion.renderHp();
+    generateLogs("hit", subzero, scorpion, enemy.value);
+  } else {
+    generateLogs("defence", scorpion, subzero);
+  }
+
+  showResult();
+  console.log("me:", player);
+  console.log("comp:", enemy);
+});
 //const elButton = document.querySelector(".button");
 
 //"body > div > div.arenas.arena1 > div.player2 > div.progressbar > div.life"
@@ -87,71 +110,9 @@ const elArenas = document.querySelector(".arenas");
 
 // Необходимые поля, такие как name, hp, img вставь в нужные места в коде.
 
-function createElement(tag, className) {
-  const elTag = document.createElement(tag);
-
-  if (className) {
-    elTag.classList.add(className);
-  }
-  return elTag;
-}
-
-function createPlayer(obj) {
-  const elPlayer = createElement("div", "player" + obj.player);
-  const elInnerOne = createElement("div", "progressbar");
-  const elInnerTwo = createElement("div", "character");
-  const divInProgressbar1 = createElement("div", "life");
-  const divInProgressbar2 = createElement("div", "name");
-  const elImg = createElement("img");
-
-  divInProgressbar1.style.width = `${obj.hp}%`;
-  divInProgressbar2.innerText = obj.name;
-  elImg.src = obj.img;
-
-  elPlayer.appendChild(elInnerOne);
-  elPlayer.appendChild(elInnerTwo);
-  elInnerOne.appendChild(divInProgressbar1);
-  elInnerOne.appendChild(divInProgressbar2);
-  elInnerTwo.appendChild(elImg);
-
-  return elPlayer;
-}
-elArenas.appendChild(createPlayer(scorpion));
-elArenas.appendChild(createPlayer(subzero));
-
-function getRandom(n) {
-  return Math.ceil(Math.random() * n);
-}
 // Функция changeHP должна в аргументах принимать, на какое кол-во надо изменять HP. И решать, нужно ли отнимать или ставить 0. Больше ничего эта функция не должна делать.
 
-function changeHp(n) {
-  this.hp -= n;
-  if (this.hp <= 0) {
-    this.hp = 0;
-  }
-  return this.hp;
-}
 // changeHp(10);
-
-function elHp() {
-  return (element = document.querySelector(".player" + this.player + " .life"));
-}
-
-function renderHp() {
-  let element = this.elHp();
-  return (element.style.width = this.hp + "%");
-}
-
-function playerWin(name) {
-  const elWinTitle = createElement("div", "loseTitle");
-  if (name) {
-    elWinTitle.innerText = name + " win";
-  } else {
-    elWinTitle.innerText = "draw";
-  }
-
-  return elWinTitle;
-}
 
 // elButton.addEventListener("click", function () {
 //   scorpion.changeHp(getRandom(20));
@@ -174,76 +135,3 @@ function playerWin(name) {
 //     elArenas.appendChild(playerWin());
 //   }
 // });
-
-function createReloadButton() {
-  const reloadWrap = createElement("div", "reloadWrap");
-  const restartButton = createElement("button", "button");
-  restartButton.innerText = "Restart";
-
-  reloadWrap.appendChild(restartButton);
-  elArenas.appendChild(reloadWrap);
-  console.log(reloadWrap);
-  console.log(restartButton);
-
-  restartButton.addEventListener("click", function () {
-    return window.location.reload();
-  });
-}
-
-function enemyAttack() {
-  const hit = ATTACK[getRandom(3) - 1];
-  //console.log("HIT:", hit);
-  const defence = ATTACK[getRandom(3) - 1];
-  //console.log("DEFENCE:", defence);
-
-  return {
-    value: getRandom(HIT[hit]),
-    hit,
-    defence,
-  };
-}
-
-elFormFight.addEventListener("submit", function (e) {
-  e.preventDefault();
-  //console.dir(elFormFight);
-  const enemy = enemyAttack();
-  //console.log(enemy);
-  const attack = {};
-
-  for (let item of elFormFight) {
-    //console.dir(item);
-    if (item.checked && item.name === "hit") {
-      attack.value = getRandom(HIT[item.value]);
-      attack.hit = item.value;
-    }
-    if (item.checked && item.name === "defence") {
-      attack.defence = item.value;
-    }
-    item.checked = false;
-  }
-  if (attack.hit !== enemy.defence) {
-    subzero.changeHp(attack.value);
-    subzero.renderHp();
-  }
-  if (enemy.hit !== attack.defence) {
-    scorpion.changeHp(attack.value);
-    scorpion.renderHp();
-  }
-
-  if (scorpion.hp === 0 || subzero.hp === 0) {
-    document.querySelector("button").disabled = true;
-    for (let item of elFormFight) {
-      item.disabled = true;
-    }
-    createReloadButton();
-  }
-  if (scorpion.hp === 0 && scorpion.hp < subzero.hp) {
-    elArenas.appendChild(playerWin(subzero.name));
-  } else if (subzero.hp === 0 && subzero.hp < scorpion.hp) {
-    elArenas.appendChild(playerWin(scorpion.name));
-  } else if (subzero.hp === 0 && scorpion.hp === 0) {
-    elArenas.appendChild(playerWin());
-  }
-  console.log("attack:", attack);
-  console.log("enemy:", enemy);
-});
