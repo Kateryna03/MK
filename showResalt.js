@@ -2,10 +2,9 @@ import createReloadButton from "./createReloadButton.js";
 import { scorpion, subzero } from "./players.js";
 import playerWin from "./playerWin.js";
 import generateLogs from "./generateLogs.js";
+import { elArenas, elFormFight } from "./constants.js";
 
 function showResult() {
-  const elArenas = document.querySelector(".arenas");
-  const elFormFight = document.querySelector(".control");
   if (scorpion.hp === 0 || subzero.hp === 0) {
     document.querySelector("button").disabled = true;
     for (let item of elFormFight) {

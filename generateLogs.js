@@ -1,11 +1,12 @@
-import getRandom from "./getRandom.js";
-//import players from "./players.js";
+import { getRandom, setTime } from "./utils.js";
 import logs from "./logs.js";
+
 function generateLogs(type, player1, player2, playerHp) {
   const elChat = document.querySelector(".chat");
   let text = "";
-  const date = new Date();
-  const time = date.getHours() + ":" + date.getMinutes();
+  const time = setTime();
+  // const date = new Date();
+  // const time = date.getHours() + ":" + date.getMinutes();
 
   switch (type) {
     case "start":
