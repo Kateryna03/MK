@@ -1,14 +1,10 @@
 import { scorpion, subzero } from "./players.js";
-//import logs from "./logs.js";
+import { elFormFight, elArenas } from "./constants.js";
 import createElement from "./createElement.js";
-import enemyAttack from "./enemyAttack.js";
-import playerAttack from "./playerAttack.js";
+import { playerAttack, enemyAttack } from "./attack.js";
 import showResult from "./showResalt.js";
 import generateLogs from "./generateLogs.js";
 
-const elFormFight = document.querySelector(".control");
-const elArenas = document.querySelector(".arenas");
-//const elChat = document.querySelector(".chat");
 generateLogs("start", scorpion, subzero);
 
 function createPlayer(obj) {

@@ -1,8 +1,4 @@
-import renderHp from "./renderHp.js";
-import changeHp from "./changeHp.js";
-import elHp from "./elHp.js";
-
-export const scorpion = {
+const scorpion = {
   name: "Scorpion",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
@@ -17,7 +13,7 @@ export const scorpion = {
   renderHp,
 };
 
-export const subzero = {
+const subzero = {
   name: "Subzero",
   hp: 100,
   img: "http://reactmarathon-api.herokuapp.com/assets/subzero.gif",
@@ -30,3 +26,23 @@ export const subzero = {
   elHp,
   renderHp,
 };
+
+// const { name, hp, img, player } = scorpion;
+// console.log(name, hp, img, player);
+function elHp() {
+  const element = document.querySelector(".player" + this.player + " .life");
+  return element;
+}
+function renderHp() {
+  let element = this.elHp();
+  return (element.style.width = this.hp + "%");
+}
+function changeHp(n) {
+  this.hp -= n;
+  if (this.hp <= 0) {
+    this.hp = 0;
+  }
+  return this.hp;
+}
+
+export { scorpion, subzero };

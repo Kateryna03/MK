@@ -1,9 +1,8 @@
 import createElement from "./createElement.js";
-
+import { elArenas } from "./constants.js";
 function createReloadButton() {
   const reloadWrap = createElement("div", "reloadWrap");
   const restartButton = createElement("button", "button");
-  const elArenas = document.querySelector(".arenas");
   restartButton.innerText = "Restart";
 
   reloadWrap.appendChild(restartButton);
