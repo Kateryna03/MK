@@ -4,57 +4,42 @@ import createElement from "./createElement.js";
 import { playerAttack, enemyAttack } from "./attack.js";
 import showResult from "./showResalt.js";
 import generateLogs from "./generateLogs.js";
+import classPlayer from "./classPlayer.js";
 
-generateLogs("start", scorpion, subzero);
-
-function createPlayer(obj) {
-  const elPlayer = createElement("div", "player" + obj.player);
-  const elInnerOne = createElement("div", "progressbar");
-  const elInnerTwo = createElement("div", "character");
-  const divInProgressbar1 = createElement("div", "life");
-  const divInProgressbar2 = createElement("div", "name");
-  const elImg = createElement("img");
-
-  divInProgressbar1.style.width = `${obj.hp}%`;
-  divInProgressbar2.innerText = obj.name;
-  elImg.src = obj.img;
-
-  elPlayer.appendChild(elInnerOne);
-  elPlayer.appendChild(elInnerTwo);
-  elInnerOne.appendChild(divInProgressbar1);
-  elInnerOne.appendChild(divInProgressbar2);
-  elInnerTwo.appendChild(elImg);
-
-  return elPlayer;
+function init() {
+  scorpion.createPlayer;
+  subzero.createPlayer;
+  generateLogs("start", scorpion, subzero);
 }
-elArenas.appendChild(createPlayer(scorpion));
-elArenas.appendChild(createPlayer(subzero));
-
+init();
 elFormFight.addEventListener("submit", function (e) {
   e.preventDefault();
   //console.dir(elFormFight);
-  const enemy = enemyAttack();
-  const player = playerAttack();
-  console.log(enemy);
+  const {
+    hit: hitEnemy,
+    defence: defenceEnemy,
+    value: valueEnemy,
+  } = enemyAttack();
+  const { hit, defence, value } = playerAttack();
 
-  if (player.hit !== enemy.defence) {
-    subzero.changeHp(player.value);
+  if (hit !== defenceEnemy) {
+    subzero.changeHp(value);
     subzero.renderHp();
-    generateLogs("hit", scorpion, subzero, player.value);
+    generateLogs("hit", scorpion, subzero, value);
   } else {
     generateLogs("defence", subzero, scorpion);
   }
-  if (enemy.hit !== player.defence) {
-    scorpion.changeHp(enemy.value);
+  if (hitEnemy !== defence) {
+    scorpion.changeHp(valueEnemy);
     scorpion.renderHp();
-    generateLogs("hit", subzero, scorpion, enemy.value);
+    generateLogs("hit", subzero, scorpion, valueEnemy);
   } else {
     generateLogs("defence", scorpion, subzero);
   }
 
   showResult();
-  console.log("me:", player);
-  console.log("comp:", enemy);
+  //console.log("me:", player);
+  //console.log("comp:", enemy);
 });
 //const elButton = document.querySelector(".button");
 
