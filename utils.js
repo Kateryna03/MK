@@ -16,4 +16,12 @@ const setTime = () => {
   return time;
 };
 
-export { getRandom, setTime };
+const createElement = (tag, className) => {
+  const elTag = document.createElement(tag);
+  if (className) {
+    elTag.classList.add(className);
+  }
+  return elTag;
+};
+
+export { getRandom, setTime, createElement };
