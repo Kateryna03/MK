@@ -11,7 +11,7 @@ export class Game {
     console.log(this.submit);
     this.form = document.querySelector(".control");
 
-    this.scorpion = new Player({
+    this.player1 = new Player({
       name: "Scorpion",
       hp: 100,
       img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
@@ -19,7 +19,7 @@ export class Game {
       rootSelector: "arenas",
     });
 
-    this.subzero = new Player({
+    this.player2 = new Player({
       name: "Subzero",
       hp: 100,
       img: "http://reactmarathon-api.herokuapp.com/assets/subzero.gif",
@@ -28,9 +28,9 @@ export class Game {
     });
 
     this.start = () => {
-      this.scorpion.createPlayer();
-      this.subzero.createPlayer();
-      generateLogs("start", this.scorpion, this.subzero);
+      this.player1.createPlayer();
+      this.player2.createPlayer();
+      generateLogs("start", this.player1, this.player2);
       //console.log(this.generateLogs());
       this.form.addEventListener("submit", (e) => {
         submitCallback(e);
@@ -47,18 +47,18 @@ export class Game {
         const { hit, defence, value } = playerAttack();
 
         if (hit !== defenceEnemy) {
-          this.subzero.changeHp(value);
-          this.subzero.renderHp();
-          generateLogs("hit", this.scorpion, this.subzero, value);
+          this.player2.changeHp(value);
+          this.player2.renderHp();
+          generateLogs("hit", this.player1, this.player2, value);
         } else {
-          generateLogs("defence", this.subzero, this.scorpion);
+          generateLogs("defence", this.player2, this.player1);
         }
         if (hitEnemy !== defence) {
-          this.scorpion.changeHp(valueEnemy);
-          this.scorpion.renderHp();
-          generateLogs("hit", this.subzero, this.scorpion, valueEnemy);
+          this.player1.changeHp(valueEnemy);
+          this.player1.renderHp();
+          generateLogs("hit", this.player2, this.player1, valueEnemy);
         } else {
-          generateLogs("defence", this.scorpion, this.subzero);
+          generateLogs("defence", this.player1, this.player2);
         }
 
         showResult();
@@ -68,7 +68,7 @@ export class Game {
       };
 
       const showResult = () => {
-        if (this.scorpion.hp === 0 || this.subzero.hp === 0) {
+        if (this.player1.hp === 0 || this.player2.hp === 0) {
           document.querySelector("button").disabled = true;
           for (let item of this.form) {
             item.disabled = true;
@@ -76,18 +76,15 @@ export class Game {
 
           createReloadButton();
         }
-        if (this.scorpion.hp === 0 && this.scorpion.hp < this.subzero.hp) {
-          this.arena.appendChild(playerWin(this.subzero.name));
-          generateLogs("end", this.subzero, this.scorpion);
-        } else if (
-          this.subzero.hp === 0 &&
-          this.subzero.hp < this.scorpion.hp
-        ) {
-          this.arena.appendChild(playerWin(this.scorpion.name));
-          generateLogs("end", this.scorpion, this.subzero);
-        } else if (this.subzero.hp === 0 && this.scorpion.hp === 0) {
+        if (this.player1.hp === 0 && this.player1.hp < this.player2.hp) {
+          this.arena.appendChild(playerWin(this.player2.name));
+          generateLogs("end", this.player2, this.player1);
+        } else if (this.player2.hp === 0 && this.player2.hp < this.player1.hp) {
+          this.arena.appendChild(playerWin(this.player1.name));
+          generateLogs("end", this.player1, this.player2);
+        } else if (this.player2.hp === 0 && this.player1.hp === 0) {
           this.arena.appendChild(playerWin());
-          generateLogs("draw", this.scorpion, this.subzero);
+          generateLogs("draw", this.player1, this.player2);
         }
       };
     };
