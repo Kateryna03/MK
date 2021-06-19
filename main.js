@@ -1,61 +1,44 @@
-import { scorpion, subzero } from "./players.js";
-import { elFormFight, elArenas } from "./constants.js";
-import createElement from "./createElement.js";
-import { playerAttack, enemyAttack } from "./attack.js";
-import showResult from "./showResalt.js";
-import generateLogs from "./generateLogs.js";
+import { Game } from "./classGame.js";
 
-generateLogs("start", scorpion, subzero);
+const game = new Game();
 
-function createPlayer(obj) {
-  const elPlayer = createElement("div", "player" + obj.player);
-  const elInnerOne = createElement("div", "progressbar");
-  const elInnerTwo = createElement("div", "character");
-  const divInProgressbar1 = createElement("div", "life");
-  const divInProgressbar2 = createElement("div", "name");
-  const elImg = createElement("img");
+game.start();
 
-  divInProgressbar1.style.width = `${obj.hp}%`;
-  divInProgressbar2.innerText = obj.name;
-  elImg.src = obj.img;
+// function init() {
+//   scorpion.createPlayer();
+//   subzero.createPlayer();
+//   generateLogs("start", scorpion, subzero);
+// }
+// init();
+// elFormFight.addEventListener("submit", function (e) {
+//   e.preventDefault();
+//   //console.dir(elFormFight);
+//   const {
+//     hit: hitEnemy,
+//     defence: defenceEnemy,
+//     value: valueEnemy,
+//   } = enemyAttack();
+//   const { hit, defence, value } = playerAttack();
 
-  elPlayer.appendChild(elInnerOne);
-  elPlayer.appendChild(elInnerTwo);
-  elInnerOne.appendChild(divInProgressbar1);
-  elInnerOne.appendChild(divInProgressbar2);
-  elInnerTwo.appendChild(elImg);
+//   if (hit !== defenceEnemy) {
+//     subzero.changeHp(value);
+//     subzero.renderHp();
+//     generateLogs("hit", scorpion, subzero, value);
+//   } else {
+//     generateLogs("defence", subzero, scorpion);
+//   }
+//   if (hitEnemy !== defence) {
+//     scorpion.changeHp(valueEnemy);
+//     scorpion.renderHp();
+//     generateLogs("hit", subzero, scorpion, valueEnemy);
+//   } else {
+//     generateLogs("defence", scorpion, subzero);
+//   }
 
-  return elPlayer;
-}
-elArenas.appendChild(createPlayer(scorpion));
-elArenas.appendChild(createPlayer(subzero));
-
-elFormFight.addEventListener("submit", function (e) {
-  e.preventDefault();
-  //console.dir(elFormFight);
-  const enemy = enemyAttack();
-  const player = playerAttack();
-  console.log(enemy);
-
-  if (player.hit !== enemy.defence) {
-    subzero.changeHp(player.value);
-    subzero.renderHp();
-    generateLogs("hit", scorpion, subzero, player.value);
-  } else {
-    generateLogs("defence", subzero, scorpion);
-  }
-  if (enemy.hit !== player.defence) {
-    scorpion.changeHp(enemy.value);
-    scorpion.renderHp();
-    generateLogs("hit", subzero, scorpion, enemy.value);
-  } else {
-    generateLogs("defence", scorpion, subzero);
-  }
-
-  showResult();
-  console.log("me:", player);
-  console.log("comp:", enemy);
-});
+//   showResult();
+//   //console.log("me:", player);
+//   //console.log("comp:", enemy);
+// });
 //const elButton = document.querySelector(".button");
 
 //"body > div > div.arenas.arena1 > div.player2 > div.progressbar > div.life"

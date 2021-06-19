@@ -1,4 +1,4 @@
-import createElement from "./createElement.js";
+import { createElement } from "./utils.js";
 import { elArenas } from "./constants.js";
 function createReloadButton() {
   const reloadWrap = createElement("div", "reloadWrap");
