@@ -11,7 +11,8 @@ function createReloadButton() {
   console.log(restartButton);
 
   restartButton.addEventListener("click", function () {
-    return window.location.reload();
+    //return window.location.reload();
+    window.location.pathname = "arenas.html";
   });
 }
 export default createReloadButton;

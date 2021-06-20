@@ -4,8 +4,8 @@ import { playerAttack, enemyAttack } from "./attack.js";
 import generateLogs from "./generateLogs.js";
 import createReloadButton from "./createReloadButton.js";
 
-let player1;
-let player2;
+// let player1;
+// let player2;
 
 export class Game {
   constructor() {
@@ -16,18 +16,66 @@ export class Game {
     this.form = document.querySelector(".control");
 
     const getPlayers = async () => {
-      const body = fetch(
-        "https://reactmarathon-api.herokuapp.com/api/mk/players"
-      ).then((response) => response.json());
-      return body;
+      const playerStr = localStorage.getItem("player1");
+      if (!playerStr) {
+        window.location.pathname = "arenas.html";
+      }
+      localStorage.removeItem("player1");
+      let p1;
+      let p2;
+      p1 = Object.assign({}, JSON.parse(playerStr));
+      p2 = await fetch(
+        "https://reactmarathon-api.herokuapp.com/api/mk/player/choose"
+      ).then((res) => res.json());
+      return {
+        p1,
+        p2,
+
+        // const body = fetch(
+        //   "https://reactmarathon-api.herokuapp.com/api/mk/players"
+        // ).then((response) => response.json());
+        // return body;
+      };
     };
 
+    //2 variant
+    // const playersInit = async () => {
+    //   const playerStr = localStorage.getItem("player1");
+    //   if (!playerStr) {
+    //     window.location.pathname = "arenas.html";
+    //   }
+    //   localStorage.removeItem("player1");
+    //   const playerObj = Object.assign({}, JSON.parse(playerStr));
+    //   const enemyObj = await fetch(
+    //     "https://reactmarathon-api.herokuapp.com/api/mk/player/choose"
+    //   ).then((res) => res.json());
+    //   return {
+    //     playerObj,
+    //     enemyObj,
+    //   };
+    // };
+    // this.start = async () => {
+    //   const { playerObj, enemyObj } = await playersInit();
+    //   //const { arena: $arena, form: $form } = this;
+    //   this.player1 = new Player({
+    //     ...playerObj,
+    //     player: 1,
+    //     rootSelector: "arenas",
+    //   });
+    //   this.player2 = new Player({
+    //     ...enemyObj,
+    //     player: 2,
+    //     rootSelector: "arenas",
+    //   });
+
+    // };
+    //вариант один
     this.start = async () => {
-      const players = await getPlayers();
-      console.log(players);
-      const p1 = players[getRandom(players.length) - 1];
-      const p2 = players[getRandom(players.length) - 1];
+      const { p1, p2 } = await getPlayers();
       console.log(p1, p2);
+      // const p1 = players[getRandom(players.length) - 1];
+      // const p2 = players[getRandom(players.length) - 1];
+      // console.log(p1, p2);
       this.player1 = new Player({
         ...p1,
         player: 1,
@@ -46,6 +94,7 @@ export class Game {
         submitCallback(e);
       });
     };
+    ///////////////////////////////
     // this.player1 = new Player({
     //   name: "Scorpion",
     //   hp: 100,
@@ -73,13 +122,25 @@ export class Game {
 
     const submitCallback = (e) => {
       e.preventDefault();
-      //console.dir(elFormFight);
       const {
         hit: hitEnemy,
         defence: defenceEnemy,
         value: valueEnemy,
       } = enemyAttack();
       const { hit, defence, value } = playerAttack();
+
+      // 3 task
+      // const remoteValues = await fetch(
+      //    "https://reactmarathon-api.herokuapp.com/api/mk/player/fight",
+      //    {
+      //      method: "POST",
+      //      body: JSON.stringify({
+      //        hit,
+      //        defence,
+      //      }),
+      //    }
+      //  ).then((res) => res.json());
+      //  const { player1: value, player2: valueEnemy }
 
       if (hit !== defenceEnemy) {
         this.player2.changeHp(value);
