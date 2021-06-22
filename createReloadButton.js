@@ -12,7 +12,7 @@ function createReloadButton() {
 
   restartButton.addEventListener("click", function () {
     //return window.location.reload();
-    window.location.pathname = "arenas.html";
+    window.location.pathname = "/SelectPlayers/index.html";
   });
 }
 export default createReloadButton;
