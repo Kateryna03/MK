@@ -30,6 +30,11 @@ export class Game {
       return {
         p1,
         p2,
+
+        // const body = fetch(
+        //   "https://reactmarathon-api.herokuapp.com/api/mk/players"
+        // ).then((response) => response.json());
+        // return body;
       };
     };
 
@@ -48,6 +53,22 @@ export class Game {
     //     playerObj,
     //     enemyObj,
     //   };
+    // };
+
+    // this.start = async () => {
+    //   const { playerObj, enemyObj } = await playersInit();
+    //   //const { arena: $arena, form: $form } = this;
+    //   this.player1 = new Player({
+    //     ...playerObj,
+    //     player: 1,
+    //     rootSelector: "arenas",
+    //   });
+    //   this.player2 = new Player({
+    //     ...enemyObj,
+    //     player: 2,
+    //     rootSelector: "arenas",
+    //   });
+
     // };
 
     //вариант один
