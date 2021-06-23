@@ -31,4 +31,19 @@ const enemyAttack = () => {
     defence,
   };
 };
+
+// export const randomAttack = async () => {
+//   let { hit, defence } = playerAttack();
+//   const response = await fetch('https://reactmarathon-api.herokuapp.com/api/mk/player/fight', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       hit,
+//       defence,
+//     })
+//   }).then(response => response.json());
+//   console.log(response);
+//   return response;
+
+// }
+
 export { playerAttack, enemyAttack };
