@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"name": "MK",
+		"path": "."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "SelectPlayer"
+  }
+}
