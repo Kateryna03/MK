@@ -18,7 +18,7 @@ export class Game {
     const getPlayers = async () => {
       const playerStr = localStorage.getItem("player1");
       if (!playerStr) {
-        window.location.pathname = "/SelectPlayers/index.html";
+        window.location.pathname = "index.html";
       }
       localStorage.removeItem("player1");
       let p1;
